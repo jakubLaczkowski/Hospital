@@ -1,33 +1,40 @@
 public class Patient extends PatientBase{
     private boolean isVomit;
-    private double urine = 0;
-    private double intake = 0;
-    private double otherSource = 0;
+    private double urine;
+    private double intake;
+    private double otherSource;
     private int stoolType;
-    private double stool = 0;
-    private double vomit = 0;
-    private double balance=-100000000000d;
-    public static final int CONSTANT_LOSS = 800;
+    private double stool;
+    private double vomit;
+    private double balance;
+
+    public Patient(){
+        urine = 0;
+        intake = 0;
+        otherSource = 0;
+        stool = 0;
+        vomit = 0;
+        balance = -100000000000d;
+    }
 
     // MATH
     public double waterFromVomit(double vomit){
-        return vomit*0.95;
+        return vomit*MedicalConstants.PERCENTAGE_OF_WATER_IN_VOMIT;
     }
     public double waterFromTemperature(double temperature){
-        return (temperature - 36.6)*333;
+        return (temperature - MedicalConstants.DEFAULT_BODY_TEMPERATURE)*MedicalConstants.WATER_LOSS_AFTER_1C_TEMP_INCREASE;
     }
     public double waterFromStool(int stoolType){
         if(stoolType == 1)
-            return stool*0.75;
+            return stool*MedicalConstants.PERCENTAGE_OF_WATER_IN_NORMAL_STOOL;
         else
-            return stool*0.95;
+            return stool*MedicalConstants.PERCENTAGE_OF_WATER_IN_DIARRHOEA;
     }
     public double fluidBalance(){
-        //   System.out.println(intake + "-" + urine + "-" + waterFromVomit(vomit) + "-" + waterFromStool(stoolType) + "-" + otherSource + "-" + waterFromTemperature(getTemperature()) + "-" + CONSTANT_LOSS);
-        return intake - urine - waterFromVomit(vomit) - waterFromStool(stoolType) - otherSource - waterFromTemperature(getTemperature()) - CONSTANT_LOSS;
+        return intake - urine - waterFromVomit(vomit) - waterFromStool(stoolType) - otherSource - waterFromTemperature(getTemperature()) - MedicalConstants.CONSTANT_LOSS_OF_FLUIDS;
     }
 
-    // GETTERS
+
     public double getIntake() {
         return intake;
     }
@@ -51,7 +58,7 @@ public class Patient extends PatientBase{
     }
     public double getBalance() { return balance; }
 
-    // SETTERS
+
     public void setIntake(double intake) {
         this.intake = intake;
     }
@@ -77,7 +84,7 @@ public class Patient extends PatientBase{
         this.balance = balance;
     }
 
-    // OVERRIDES
+
     public String toString(){
         StringBuilder sb = new StringBuilder(100);
         sb.append("Imie: ");
@@ -108,7 +115,7 @@ public class Patient extends PatientBase{
         return getPesel().equals(other.getPesel());
     }
     public int hashCode(){
-        return 7*Integer.parseInt(getPesel());
+        return 40*Integer.parseInt(getPesel());
     }
 }
 

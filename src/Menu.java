@@ -1,38 +1,58 @@
 import java.util.*;
 
 public class Menu {
-    private Scanner input = new Scanner(System.in).useLocale(Locale.US);
-    private boolean czyPoprawne = false;
-    private boolean menu = false;
-    private boolean next = false;
-    String option;
+    private Scanner input;
+    private boolean czyPoprawne;
+    private boolean menu;
+    private boolean next;
+    private String option;
+    private StringBuilder sb;
 
+    public Menu(){
+        input = new Scanner(System.in).useLocale(Locale.US);
+        czyPoprawne = false;
+        menu = false;
+        next = false;
+    }
     public String menuOptions(){
-        System.out.println("-------------------------------------");
-        System.out.println("1. Wyswietl liste pacjentow.\n2. Dodaj pacjenta do listy.\n3. Oblicz bilans plynow.\n" +
-                "4. Usun pacjenta z bazy.\n5. Aktualizacja parametrow pacjenta.\n0. Wyjdz z programu.");
-        System.out.println("-------------------------------------");
+        sb = new StringBuilder();
+        sb.append("-------------------------------------")
+        .append("\n")
+        .append("1. Wyswietl liste pacjentow.")
+        .append("\n")
+        .append("2. Dodaj pacjenta do listy.")
+        .append("\n")
+        .append("3. Oblicz bilans plynow.")
+        .append("\n")
+        .append("4. Usun pacjenta z bazy.")
+        .append("\n")
+        .append("5. Aktualizacja parametrow pacjenta.")
+        .append("\n")
+        .append("0. Wyjdz z programu.")
+        .append("\n")
+        .append("-------------------------------------");
+        System.out.println(sb);
         option = input.nextLine();
         return option;
     }
-    public void readName(Patient pacjent){
+    public void readName(Patient patient){
         System.out.println("Podaj imie:");
-        pacjent.setName(input.nextLine());
+        patient.setName(input.nextLine());
     }
-    public void readPesel(Patient pacjent){
+    public void readPesel(Patient patient){
         System.out.println("Podaj pesel:");
-        pacjent.setPesel(input.nextLine());
+        patient.setPesel(input.nextLine());
     }
-    public void readBloodPressure(Patient pacjent){
+    public void readBloodPressure(Patient patient){
         System.out.println("Podaj cisnienie:");
-        pacjent.setBloodPressure(input.nextLine());
+        patient.setBloodPressure(input.nextLine());
     }
-    public void readTemperature(Patient pacjent) {
+    public void readTemperature(Patient patient) {
         czyPoprawne = false;
         while (!czyPoprawne) {
             System.out.println("Podaj temperature:");
             try {
-                pacjent.setTemperature(input.nextDouble());
+                patient.setTemperature(input.nextDouble());
                 czyPoprawne = true;
             } catch (InputMismatchException e) {
                 System.out.println("Podaj poprawna wartosc!");
@@ -41,12 +61,12 @@ public class Menu {
         }
     }
 
-    public void readGlucoseLevel(Patient pacjent) {
+    public void readGlucoseLevel(Patient patient) {
         czyPoprawne = false;
         while (!czyPoprawne) {
             System.out.println("Podaj poziom cukru:");
             try {
-                pacjent.setGlucoseLevel(input.nextDouble());
+                patient.setGlucoseLevel(input.nextDouble());
                 czyPoprawne = true;
             } catch (InputMismatchException e) {
                 System.out.println("Podaj poprawna wartosc!");
@@ -55,12 +75,12 @@ public class Menu {
         }
     }
 
-    public void readUrine(Patient pacjent) {
+    public void readUrine(Patient patient) {
         czyPoprawne = false;
         while (!czyPoprawne) {
             System.out.println("Podaj ilosc moczu:");
             try {
-                pacjent.setUrine(input.nextDouble());
+                patient.setUrine(input.nextDouble());
                 czyPoprawne = true;
             } catch (InputMismatchException e) {
                 System.out.println("Podaj poprawna wartosc!");
@@ -69,12 +89,12 @@ public class Menu {
         }
     }
 
-    public void readIntake(Patient pacjent) {
+    public void readIntake(Patient patient) {
         czyPoprawne = false;
         while (!czyPoprawne) {
             System.out.println("Podaj ilosc przyjetych plynow:");
             try {
-                pacjent.setIntake(input.nextDouble());
+                patient.setIntake(input.nextDouble());
                 czyPoprawne = true;
             } catch (InputMismatchException e) {
                 System.out.println("Podaj poprawna wartosc!");
@@ -83,17 +103,17 @@ public class Menu {
         }
     }
 
-    public void readStoolType(Patient pacjent) {
+    public void readStoolType(Patient patient) {
         czyPoprawne = false;
         while (!czyPoprawne) {
             System.out.println("Jaki typ stolca wystapil? 1. Normalny 2. Biegunka");
             option = input.nextLine();
             try {
                 if (option.equalsIgnoreCase("1")) {
-                    pacjent.setStoolType(1);
+                    patient.setStoolType(1);
                     System.out.println("Podaj ilosc stolca w ml");
                     try {
-                        pacjent.setStool(input.nextDouble());
+                        patient.setStool(input.nextDouble());
                         czyPoprawne = true;
                         input.nextLine();
                     } catch (InputMismatchException e) {
@@ -101,10 +121,10 @@ public class Menu {
                         input.nextLine();
                     }
                 } else if (option.equalsIgnoreCase("2")) {
-                    pacjent.setStoolType(2);
+                    patient.setStoolType(2);
                     System.out.println("Podaj ilosc stolca w ml");
                     try {
-                        pacjent.setStool(input.nextDouble());
+                        patient.setStool(input.nextDouble());
                         input.nextLine();
                         czyPoprawne = true;
                     } catch (InputMismatchException e) {
@@ -120,7 +140,7 @@ public class Menu {
 
     }
 
-    public void readIsVomit(Patient pacjent) {
+    public void readIsVomit(Patient patient) {
         czyPoprawne = false;
         while (!czyPoprawne) {
             System.out.println("Czy wystapily wymioty? T/N:");
@@ -128,25 +148,25 @@ public class Menu {
             if (option.equalsIgnoreCase("t")) {
                 System.out.println("Podaj ilosc wymiotow:");
                 try {
-                    pacjent.setVomit(input.nextDouble());
+                    patient.setVomit(input.nextDouble());
                     czyPoprawne = true;
                 } catch (InputMismatchException e) {
                     System.out.println("Podaj poprawna wartosc!");
                 }
             } else if (option.equalsIgnoreCase("n")) {
-                pacjent.setVomit(0);
+                patient.setVomit(0);
                 czyPoprawne = true;
             } else
                 System.out.println("Podaj poprawna wartosc!");
         }
     }
 
-    public void readOtherSources(Patient pacjent) {
+    public void readOtherSources(Patient patient) {
         czyPoprawne = false;
         while (!czyPoprawne) {
             System.out.println("Jesli wystapily inne zrodla utraty plynow, podaj ilosc wydalonego plynu w ml:");
             try {
-                pacjent.setOtherSource(input.nextDouble());
+                patient.setOtherSource(input.nextDouble());
                 czyPoprawne = true;
             } catch (InputMismatchException e) {
                 System.out.println("Podaj poprawna wartosc!");
@@ -188,17 +208,17 @@ public class Menu {
         }
     }
 
-    public int choosePatient(ArrayList<Patient> listaPacjentow){
+    public int choosePatient(ArrayList<Patient> patients){
         czyPoprawne = false;
-        System.out.println("Ktorego pacjenta chcesz wybrac?");
         int j=1000000;
+        System.out.println("Ktorego pacjenta chcesz wybrac?");
         while(!czyPoprawne) {
-            for (int i = 0; i < listaPacjentow.size(); i++) {
-                System.out.println(i + ". " + listaPacjentow.get(i));
+            for (int i = 0; i < patients.size(); i++) {
+                System.out.println(i + ". " + patients.get(i));
             }
             try {
                 j = input.nextInt();
-                if(j<= listaPacjentow.size())
+                if(j<= patients.size())
                     czyPoprawne = true;
                 else
                     System.out.println("Podaj poprawny indeks!");
@@ -209,15 +229,15 @@ public class Menu {
         }
         return j;
     }
-    public void removePatient(ArrayList<Patient> listaPacjentow){
+    public void removePatient(ArrayList<Patient> patients){
         czyPoprawne = false;
         System.out.println("Ktorego pacjenta chcesz usunac?");
         while(!czyPoprawne) {
-            for (int i = 0; i < listaPacjentow.size(); i++) {
-                System.out.println(i + ". " + listaPacjentow.get(i));
+            for (int i = 0; i < patients.size(); i++) {
+                System.out.println(i + ". " + patients.get(i));
             }
             try {
-                listaPacjentow.remove(input.nextInt());
+                patients.remove(input.nextInt());
                 czyPoprawne = true;
             } catch (IndexOutOfBoundsException g) {
                 System.out.println("Podaj poprawna wartosc indeksu!");
@@ -227,7 +247,7 @@ public class Menu {
             input.nextLine();
         }
     }
-    public void chooseParameter(int choice, ArrayList<Patient> listaPacjentow){
+    public void chooseParameter(int choice, ArrayList<Patient> patients){
         czyPoprawne = false;
         while(!czyPoprawne) {
             System.out.println("Ktory parametr chcesz zaktualizowac?");
@@ -235,13 +255,13 @@ public class Menu {
             option = input.nextLine();
             if(option.equals("1")) {
                 System.out.println("Podaj nowa wartosc");
-                listaPacjentow.get(choice).setBloodPressure(input.nextLine());
+                patients.get(choice).setBloodPressure(input.nextLine());
                 czyPoprawne = true;
             }
             else if(option.equals("2")) {
                 System.out.println("Podaj nowa wartosc");
                 try {
-                    listaPacjentow.get(choice).setTemperature(input.nextDouble());
+                    patients.get(choice).setTemperature(input.nextDouble());
                     czyPoprawne = true;
                 }catch(InputMismatchException e){
                     System.out.println("Podaj poprawna wartosc liczbowa!");
@@ -250,7 +270,7 @@ public class Menu {
             else if(option.equals("3")) {
                 System.out.println("Podaj nowa wartosc");
                 try {
-                    listaPacjentow.get(choice).setGlucoseLevel(input.nextDouble());
+                    patients.get(choice).setGlucoseLevel(input.nextDouble());
                     czyPoprawne = true;
                 }catch(InputMismatchException e){
                     System.out.println("Podaj poprawna wartosc liczbowa!");
@@ -266,7 +286,7 @@ public class Menu {
     }
 
 
-    // GETTERS
+
     public boolean getNext() {
         return next;
     }
@@ -275,7 +295,7 @@ public class Menu {
         return menu;
     }
 
-    // SETTERS
+
     public void setNext(boolean next) {
         this.next = next;
     }

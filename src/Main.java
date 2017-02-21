@@ -2,21 +2,22 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Patient> listaPacjentow = new ArrayList<Patient>();
-        Patient pacjent;
-        Database dataBase = new Database();
+        ArrayList<Patient> patients = new ArrayList<Patient>();
+        Patient patient;
+        DatabaseHandler dataBase;
         String option;
         Menu menu = new Menu();
         int choice;
 
-        listaPacjentow = dataBase.tryReadDataBase();
+        dataBase = new DatabaseHandler("C:/Patient DataBase/baza danych pacjentow.txt");
+        patients = dataBase.tryReadDataBase();
 
         do {
             option = menu.menuOptions();
             if(option.equals("1")){
-                if(listaPacjentow.size() != 0) {
-                    for (int i = 0; i < listaPacjentow.size(); i++) {
-                        System.out.println(i + ". " + listaPacjentow.get(i));
+                if(patients.size() != 0) {
+                    for (int i = 0; i < patients.size(); i++) {
+                        System.out.println(i + ". " + patients.get(i));
                     }
                 }
                 else
@@ -25,32 +26,32 @@ public class Main {
             }
             else if (option.equals("2")) {
                 do {
-                    pacjent = new Patient();
+                    patient = new Patient();
                     menu.setNext(false);
                     menu.setMenu(false);
-                    menu.readName(pacjent);
-                    menu.readPesel(pacjent);
-                    menu.readBloodPressure(pacjent);
-                    menu.readTemperature(pacjent);
-                    menu.readGlucoseLevel(pacjent);
-                    listaPacjentow.add(pacjent);
+                    menu.readName(patient);
+                    menu.readPesel(patient);
+                    menu.readBloodPressure(patient);
+                    menu.readTemperature(patient);
+                    menu.readGlucoseLevel(patient);
+                    patients.add(patient);
                     menu.addNextPatient();
                     if(!menu.getNext())
                         menu.backToMenu();
                 } while (menu.getNext());
             }
             else if(option.equals("3")){
-                pacjent = new Patient();
+                patient = new Patient();
                 menu.setMenu(false);
-                if(listaPacjentow.size() != 0){
-                    pacjent = listaPacjentow.get(menu.choosePatient(listaPacjentow));
-                    menu.readIntake(pacjent);
-                    menu.readIsVomit(pacjent);
-                    menu.readUrine(pacjent);
-                    menu.readStoolType(pacjent);
-                    menu.readOtherSources(pacjent);
-                    System.out.println("Bilans plynow to: " + pacjent.fluidBalance());
-                    pacjent.setBalance(pacjent.fluidBalance());
+                if(patients.size() != 0){
+                    patient = patients.get(menu.choosePatient(patients));
+                    menu.readIntake(patient);
+                    menu.readIsVomit(patient);
+                    menu.readUrine(patient);
+                    menu.readStoolType(patient);
+                    menu.readOtherSources(patient);
+                    System.out.println("Bilans plynow to: " + patient.fluidBalance());
+                    patient.setBalance(patient.fluidBalance());
                     menu.backToMenu();
                 }
                 else{
@@ -60,8 +61,8 @@ public class Main {
             }
             else if(option.equals("4")){
                 do {
-                    if (listaPacjentow.size() != 0) {
-                        menu.removePatient(listaPacjentow);
+                    if (patients.size() != 0) {
+                        menu.removePatient(patients);
                     } else {
                         System.out.println("Lista pacjentow jest pusta!");
                         menu.setMenu(true);
@@ -71,14 +72,14 @@ public class Main {
             }
             else if(option.equals("5")){
                 do {
-                    choice = menu.choosePatient(listaPacjentow);
-                    menu.chooseParameter(choice, listaPacjentow);
+                    choice = menu.choosePatient(patients);
+                    menu.chooseParameter(choice, patients);
                     menu.backToMenu();
                 }while(menu.getNext());
             }
             else if(option.equals("0")){
                 menu.inputClose();
-                dataBase.tryCreateDataBase(listaPacjentow);
+                dataBase.tryCreateDataBase(patients);
                 dataBase.outputClose();
                 System.exit(0);
             }
@@ -89,10 +90,10 @@ public class Main {
         }while(menu.getMenu());
 
         menu.inputClose();
-        for(int i=0; i< listaPacjentow.size(); i++){
-            System.out.println(i + ". " + listaPacjentow.get(i));
+        for(int i = 0; i < patients.size(); i++){
+            System.out.println(i + ". " + patients.get(i));
         }
-        dataBase.tryCreateDataBase(listaPacjentow);
+        dataBase.tryCreateDataBase(patients);
         dataBase.outputClose();
     }
 }

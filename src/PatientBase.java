@@ -6,7 +6,7 @@ public abstract class PatientBase {
     private double glucoseLevel;
 
 
-    // GETTERS
+
     public String getName(){
         return name;
     }
@@ -23,7 +23,7 @@ public abstract class PatientBase {
         return pesel;
     }
 
-    // SETTERS
+
     public void setName(String name) {
         this.name = name;
     }
