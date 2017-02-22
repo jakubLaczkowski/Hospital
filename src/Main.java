@@ -2,12 +2,12 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Patient> patients = new ArrayList<Patient>();
         Patient patient;
         DatabaseHandler dataBase;
         String option;
         Menu menu = new Menu();
         int choice;
+        ArrayList<Patient> patients = new ArrayList<Patient>();
 
         dataBase = new DatabaseHandler("C:/Patient DataBase/baza danych pacjentow.txt");
         patients = dataBase.tryReadDataBase();

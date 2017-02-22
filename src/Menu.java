@@ -1,12 +1,14 @@
 import java.util.*;
-
+import org.apache.log4j.*;
 public class Menu {
+    private static final Logger LOGGER = Logger.getLogger(Menu.class);
     private Scanner input;
     private boolean czyPoprawne;
     private boolean menu;
     private boolean next;
     private String option;
     private StringBuilder sb;
+
 
     public Menu(){
         input = new Scanner(System.in).useLocale(Locale.US);
@@ -55,7 +57,7 @@ public class Menu {
                 patient.setTemperature(input.nextDouble());
                 czyPoprawne = true;
             } catch (InputMismatchException e) {
-                System.out.println("Podaj poprawna wartosc!");
+                LOGGER.error("Wrong input format", e);
             }
             input.nextLine();
         }
@@ -69,7 +71,7 @@ public class Menu {
                 patient.setGlucoseLevel(input.nextDouble());
                 czyPoprawne = true;
             } catch (InputMismatchException e) {
-                System.out.println("Podaj poprawna wartosc!");
+                LOGGER.error("Wrong input format", e);
             }
             input.nextLine();
         }
@@ -83,7 +85,7 @@ public class Menu {
                 patient.setUrine(input.nextDouble());
                 czyPoprawne = true;
             } catch (InputMismatchException e) {
-                System.out.println("Podaj poprawna wartosc!");
+                LOGGER.error("Wrong input format", e);
             }
             input.nextLine();
         }
@@ -97,7 +99,7 @@ public class Menu {
                 patient.setIntake(input.nextDouble());
                 czyPoprawne = true;
             } catch (InputMismatchException e) {
-                System.out.println("Podaj poprawna wartosc!");
+                LOGGER.error("Wrong input format", e);
             }
             input.nextLine();
         }
@@ -115,9 +117,9 @@ public class Menu {
                     try {
                         patient.setStool(input.nextDouble());
                         czyPoprawne = true;
-                        input.nextLine();
                     } catch (InputMismatchException e) {
-                        System.out.println("Podaj poprawna wartosc!");
+                        LOGGER.error("Wrong input format", e);
+                    }finally{
                         input.nextLine();
                     }
                 } else if (option.equalsIgnoreCase("2")) {
@@ -125,16 +127,16 @@ public class Menu {
                     System.out.println("Podaj ilosc stolca w ml");
                     try {
                         patient.setStool(input.nextDouble());
-                        input.nextLine();
                         czyPoprawne = true;
                     } catch (InputMismatchException e) {
-                        System.out.println("Podaj poprawna wartosc!");
+                        LOGGER.error("Wrong input format", e);
+                    }finally{
                         input.nextLine();
                     }
                 } else
-                    System.out.println("Podaj poprawna wartosc!");
+                    LOGGER.error("Number out of bounds");
             } catch (InputMismatchException e) {
-                System.out.println("Podaj poprawna wartosc!");
+                LOGGER.error("Wrong input format", e);
             }
         }
 
@@ -151,13 +153,13 @@ public class Menu {
                     patient.setVomit(input.nextDouble());
                     czyPoprawne = true;
                 } catch (InputMismatchException e) {
-                    System.out.println("Podaj poprawna wartosc!");
+                    LOGGER.error("Wrong input format", e);
                 }
             } else if (option.equalsIgnoreCase("n")) {
                 patient.setVomit(0);
                 czyPoprawne = true;
             } else
-                System.out.println("Podaj poprawna wartosc!");
+                LOGGER.error("Number out of bounds");
         }
     }
 
@@ -169,7 +171,7 @@ public class Menu {
                 patient.setOtherSource(input.nextDouble());
                 czyPoprawne = true;
             } catch (InputMismatchException e) {
-                System.out.println("Podaj poprawna wartosc!");
+                LOGGER.error("Wrong input format", e);
             }
             input.nextLine();
         }
@@ -187,7 +189,7 @@ public class Menu {
                 menu = false;
                 czyPoprawne = true;
             } else
-                System.out.println("Podaj T lub N");
+                LOGGER.error("Wrong input");
         }
     }
 
@@ -203,7 +205,7 @@ public class Menu {
                 next = false;
                 czyPoprawne = true;
             } else {
-                System.out.println("Podaj T lub N");
+                LOGGER.error("Wrong input");
             }
         }
     }
@@ -221,9 +223,9 @@ public class Menu {
                 if(j<= patients.size())
                     czyPoprawne = true;
                 else
-                    System.out.println("Podaj poprawny indeks!");
+                    LOGGER.error("Array index out of bounds");
             }catch(InputMismatchException e){
-                System.out.println("Podaj wartosc liczbowa!");
+                LOGGER.error("Wrong input format", e);
             }
             input.nextLine();
         }
@@ -239,10 +241,10 @@ public class Menu {
             try {
                 patients.remove(input.nextInt());
                 czyPoprawne = true;
-            } catch (IndexOutOfBoundsException g) {
-                System.out.println("Podaj poprawna wartosc indeksu!");
-            }catch(Exception e){
-                System.out.println("Wybrales zly indeks!");
+            } catch (IndexOutOfBoundsException e) {
+                LOGGER.error("Array index out of bounds", e);
+            }catch(InputMismatchException g){
+                LOGGER.error("Wrong input format", g);
             }
             input.nextLine();
         }
@@ -264,7 +266,7 @@ public class Menu {
                     patients.get(choice).setTemperature(input.nextDouble());
                     czyPoprawne = true;
                 }catch(InputMismatchException e){
-                    System.out.println("Podaj poprawna wartosc liczbowa!");
+                    LOGGER.error("Wrong input format", e);
                 }
             }
             else if(option.equals("3")) {
@@ -273,11 +275,11 @@ public class Menu {
                     patients.get(choice).setGlucoseLevel(input.nextDouble());
                     czyPoprawne = true;
                 }catch(InputMismatchException e){
-                    System.out.println("Podaj poprawna wartosc liczbowa!");
+                    LOGGER.error("Wrong input format", e);
                 }
             }
             else
-                System.out.println("Podaj poprawna wartosc indeksu!");
+                LOGGER.error("Wrong input format/Array index out of bounds");
             input.nextLine();
         }
     }

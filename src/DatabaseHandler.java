@@ -1,20 +1,22 @@
 import java.util.*;
 import java.io.*;
+import org.apache.log4j.*;
 public class DatabaseHandler {
+    private static final Logger LOGGER = Logger.getLogger(DatabaseHandler.class);
     private String dbPath;
     private File bazaDanych;
+    private File logFile;
     private PrintWriter output;
     private BufferedReader input;
 
     public DatabaseHandler(String dbPath){
         this.dbPath = dbPath;
         bazaDanych = new File(dbPath);
-
     }
     public void createDataBase(ArrayList<Patient> patients) throws FileNotFoundException{
         StringBuilder sb;
-        output = new PrintWriter(bazaDanych);
         try {
+            output = new PrintWriter(bazaDanych);
             for (int i = 0; i < patients.size(); i++) {
                 sb = new StringBuilder();
                 sb.append(patients.get(i).getName()).append(" ").append(patients.get(i).getPesel()).append(" ").append(patients.get(i).getBloodPressure())
@@ -24,7 +26,10 @@ public class DatabaseHandler {
                 output.print(sb);
                 output.println();
             }
-        }catch(Exception e) {
+        }catch(FileNotFoundException e) {
+            LOGGER.error("File not found", e);
+        }catch(ArrayIndexOutOfBoundsException g){
+            LOGGER.error("Array index out of bounds", g);
         }finally{
             output.close();
         }
@@ -33,8 +38,8 @@ public class DatabaseHandler {
         Patient patient;
         String line = null;
         String[] lineSplitted;
-        input = new BufferedReader(new FileReader(bazaDanych));
         ArrayList<Patient> patients = new ArrayList<Patient>();
+        input = new BufferedReader(new FileReader(bazaDanych));
         while((line = input.readLine()) != null){
             patient = new Patient();
             lineSplitted = line.split(" ");
@@ -44,11 +49,16 @@ public class DatabaseHandler {
             try {
                 patient.setTemperature(Double.parseDouble(lineSplitted[3]));
                 patient.setGlucoseLevel(Double.parseDouble(lineSplitted[4]));
-            }catch(NumberFormatException g){};
+            }catch(NumberFormatException g){
+                LOGGER.error("Wrong number format", g);
+            }
             try {
                 patient.setBalance(Double.parseDouble(lineSplitted[5]));
             }catch(ArrayIndexOutOfBoundsException e){
-            }catch(NumberFormatException g){};
+                LOGGER.error("Array index out of bounds", e);
+            }catch(NumberFormatException g){
+                LOGGER.error("Wrong number format", g);
+            }
             patients.add(patient);
         }
         input.close();
@@ -59,9 +69,9 @@ public class DatabaseHandler {
         try{
             patients = readDataBase();
         }catch(FileNotFoundException e){
-            System.out.println("Plik zrodlowy nie istnieje");
+            LOGGER.error("File not found", e);
         }catch(IOException g){
-            g.getMessage();
+            LOGGER.error(g.getMessage(), g);
         }
         return patients;
     }
@@ -69,7 +79,7 @@ public class DatabaseHandler {
         try{
             createDataBase(patients);
         }catch(FileNotFoundException e){
-            System.out.println("Plik zrodlowy nie istnieje, baza nie zostala utworzona");
+            LOGGER.error("File not found", e);
         }
     }
     public void outputClose(){
